@@ -2,9 +2,9 @@ package org.vaadin.pwa;
 
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.BodySize;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.theme.Theme;
 import com.vaadin.flow.theme.lumo.Lumo;
@@ -20,36 +20,17 @@ public class MainView extends VerticalLayout {
 
     public MainView() {
 
-        // create layout
+        final HelloWorldComponent helloWorld = new HelloWorldComponent();
 
-        WebDSP dsp = new WebDSP();
-        add(dsp);
+        final TextField nameInput = new TextField("Name");
 
-        HorizontalLayout buttons = new HorizontalLayout();
-        add(buttons);
+        Button submitBtn = new Button("Submit");
+        submitBtn.addClickListener(e -> helloWorld.setName(nameInput.getValue()));
 
-        Button toggleWebcam = new Button("Toggle Webcam");
-        toggleWebcam.addClickListener(e -> dsp.setWebcamEnabled(!dsp.isWebcamEnabled()));
-        buttons.add(toggleWebcam);
+        add(nameInput);
+        add(submitBtn);
+        add(helloWorld);
 
-        Button originalBtn = new Button("Original");
-        originalBtn.addClickListener(e -> dsp.setFilter(WebDSP.Filter.NONE));
-        buttons.add(originalBtn);
-
-        Button invertBtn = new Button("Invert");
-        invertBtn.addClickListener(e -> dsp.setFilter(WebDSP.Filter.INVERT));
-        buttons.add(invertBtn);
-
-        Button dewdropBtn = new Button("Dewdrops");
-        dewdropBtn.addClickListener(e -> dsp.setFilter(WebDSP.Filter.DEWDROPS));
-        buttons.add(dewdropBtn);
-
-        Button sobelBtn = new Button("Sobel");
-        sobelBtn.addClickListener(e -> dsp.setFilter(WebDSP.Filter.SOBEL));
-        buttons.add(sobelBtn);
-
-        // start webcam
-        dsp.setWebcamEnabled(true);
     }
 
     // TODO: use PageConfigurator interface instead of BootstrapListener

@@ -1,6 +1,6 @@
 {
-  "short_name": "Webcam FX",
-  "name": "Webcam Filter FX",
+  "short_name": "Vaadin Flow PWA Example",
+  "name": "Vaadin Flow PWA",
   "icons": [
     {
       "src": "frontend/src/images/icons/icon-72x72.png",
