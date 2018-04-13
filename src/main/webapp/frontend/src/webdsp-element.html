@@ -1,0 +1,109 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<script src = './webdsp/webdsp.js' type = 'text/javascript'></script>
+
+<dom-module id="webdsp-element">
+    <template>
+        <style>
+            :host {
+                display: block;
+            }
+            #video {
+                display: none;
+            }
+        </style>
+        <canvas id="canvas"></canvas>
+        <video id="video" loop="false" autoplay type="video/mp4"></video>
+
+    </template>
+
+    <script>
+        class WebdspElement extends Polymer.Element {
+
+            static get is() {
+                return 'webdsp-element';
+            }
+
+            static get properties() {
+                return {
+                    enableWebcam: {
+                        type: Boolean,
+                        observer: '_enableWebcamChanged'
+                    },
+                    filter: {
+                        type: String
+                    },
+                    _webdsp: {
+                        type: Object
+                    },
+                    _canvasCtx: {
+                        type: Object
+                    },
+                    _filterMap: {
+                        type: Object
+                    }
+                };
+            }
+
+            ready() {
+                super.ready();
+                // load webassembly module
+                loadWASM().then(module => {
+                    this._webdsp = module;
+                    this._filterMap = {
+                        'invert': this._webdsp.invert,
+                        'dewdrops': this._webdsp.dewdrops,
+                        'sobel': this._webdsp.sobelFilter
+                    };
+                });
+                // stream video data to canvas
+                this.$.video.addEventListener("loadeddata", () => {
+                    this.$.canvas.setAttribute('height', this.$.video.videoHeight);
+                    this.$.canvas.setAttribute('width', this.$.video.videoWidth);
+                    this._webcamDrawLoop();
+                });
+                this._canvasCtx = this.$.canvas.getContext('2d');
+            }
+
+            _webcamDrawLoop() {
+                this._animFrame = requestAnimationFrame(this._webcamDrawLoop.bind(this));
+                this._canvasCtx.drawImage(this.$.video, 0, 0);
+                if (this.filter) {
+                    this._applyFilter(this.filter);
+                }
+            }
+
+            _enableWebcamChanged(enableWebcam) {
+                if (enableWebcam) {
+                    navigator.mediaDevices.getUserMedia({video: true})
+                        .then((stream) => {
+                        this.$.video.srcObject = stream;
+                    }).catch(function(err) {
+                        console.log(err.name);
+                    });
+                } else {
+                    this.$.video.srcObject = undefined;
+                    cancelAnimationFrame(this._animFrame);
+                }
+            }
+
+            _applyFilter(filter) {
+                if (filter) {
+                    const filterMethod = this._filterMap[filter.toLowerCase()];
+                    if (filterMethod) {
+                        const imageData = this._getImageData();
+                        imageData.data.set(filterMethod(imageData.data, this.$.canvas.width, this.$.canvas.height));
+                        this._canvasCtx.putImageData(imageData, 0, 0);
+                    }
+                }
+            }
+
+            _getImageData() {
+                return this._canvasCtx.getImageData(0, 0, this.$.canvas.width, this.$.canvas.height);
+            }
+
+        }
+
+        window.customElements.define(WebdspElement.is, WebdspElement);
+    </script>
+</dom-module>
