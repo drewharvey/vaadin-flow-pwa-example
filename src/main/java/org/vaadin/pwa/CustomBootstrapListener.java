@@ -26,14 +26,13 @@ public class CustomBootstrapListener implements BootstrapListener {
         // Add service worker
         response.getDocument().body().appendElement("script")
                 .attr("src", "register-sw.js");
-//        head.append("<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js')</script>");
 
         // add icons tags
         head.append("<link rel='shortcut icon' href='icons/favicon.ico'>");
-        head.append("<link rel='icon' sizes='192x192' href='icons/icon-192.png'>");
-        head.append("<link rel='icon' sizes='96x96' href='icons/icon-96.png'>");
-        head.append("<link rel='apple-touch-icon' sizes='192x192' href='icons/icon-192.png'>");
-        head.append("<link rel='apple-touch-icon' sizes='96x96' href='icons/icon-96.png'>");
+        head.append("<link rel='icon' sizes='192x192' href='frontend/src/images/icons/icon-192x192.png'>");
+        head.append("<link rel='icon' sizes='96x96' href='frontend/src/images/icons/icon-96x96.png'>");
+        head.append("<link rel='apple-touch-icon' sizes='192x192' href='frontend/src/images/icons/icon-192x192.png'>");
+        head.append("<link rel='apple-touch-icon' sizes='96x96' href='frontend/src/images/icons/icon-96x96.png'>");
     }
 
 }
