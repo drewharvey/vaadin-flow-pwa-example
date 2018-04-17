@@ -5,19 +5,30 @@ Simple web application that follows the PWA guidelines and runs offline.
 
 Learn more about [Vaadin Flow Framework](https://vaadin.com/flow).
 
-This application uses the [WebDSP webassembly](https://github.com/shamadee/web-dsp) 
-module for filter effects.
+Learn more about [Progressive Web Apps (PWA)](https://vaadin.com/pwa).
 
 ## Starting the Server ##  
 
 To start the server, open a terminal and run `mvn jetty:run` and open 
 [http://localhost:8080](http://localhost:8080) in browser.
 
-## Enable Offline Support to a Vaadin Flow App ##
+## Create a Vaadin Flow PWA with Offline Support ##
 
-Adding basic offline support in Vaadin Flow is very simple. By creating just a few
-files we can add enable the app to work offline. By using this Vaadin Flow app as an
-example, let's cover everything we need to do in order to support offline.
+Turning your Vaadin Flow app into a fully functioning PWA is easy. By creating just a few
+files we can have a full PWA with offline support. By using this Vaadin Flow app as an
+example, let's cover everything we need to do.
+
+Here is a quick overview of what we will do:
+
+ * Create a manifest.json to describe our PWA.
+ * Create a static offline.html file to be used when the app is offline.
+ * Create and register a service worker js file to cache offline assets and handle serving the offline.html when offline.
+ * Use a BootstrapListener to add our PWA required files to the `<head>` of each webpage.
+ * Use the `VaadinServiceInitListener` to specify our `CustomBootstrapListener`.
+
+### Creating the PWA required files ###
+
+In order to adhere to PWA standards, there are a few files we are required to have.
 
 Files we will create:
  * manifest.json
@@ -105,6 +116,8 @@ The service worker will be in charge of caching our offline files and serving th
 when we are offline.  You can read more about service workers here:
 [Introduction to Service Worker](https://developers.google.com/web/ilt/pwa/introduction-to-service-worker)
 
+#### The service worker ####
+
 We create the sw.js file in the `src/main/webapp` directory. This is our service worker file.
 The main uses of this code is to cache any files we want accessible when offline. This
 service worker also intercepts fetch requests and will return the offline.html file if
@@ -163,6 +176,10 @@ self.addEventListener('fetch', function (event) {
     }
 });
 ```
+
+Learn more about [Caching Strategies](https://vaadin.com/progressive-web-applications/learn/caching-strategies).
+
+#### Register the service worker ####
 
 Now that we have our service worker file, we will create a wrapper that registers the 
 service worker when the application is loaded. We create the register-sw.js file in
@@ -283,3 +300,10 @@ here is an outline of the main points:
  * Create and register a service worker js file to cache offline assets and handle serving the offline.html when offline.
  * Use a BootstrapListener to add our PWA required files to the `<head>` of each webpage.
  * Use the `VaadinServiceInitListener` to specify our `CustomBootstrapListener`.
+ 
+ ## Resources ##
+ 
+Learn more about [Vaadin Flow Framework](https://vaadin.com/flow).
+
+Learn more about [Progressive Web Apps (PWA)](https://vaadin.com/pwa).
+
