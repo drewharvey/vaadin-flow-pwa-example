@@ -23,6 +23,9 @@ public class CustomBootstrapListener implements BootstrapListener {
         head.prepend("<meta name='theme-color' content='#227aef'>");
         head.prepend("<link rel='manifest' href='manifest.json'>");
 
+        //
+        head.prepend("<meta name='viewport' content='width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes'>");
+
         // Add service worker
         response.getDocument().body().appendElement("script")
                 .attr("src", "register-sw.js");
