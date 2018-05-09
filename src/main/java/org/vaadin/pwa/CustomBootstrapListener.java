@@ -29,7 +29,7 @@ public class CustomBootstrapListener implements BootstrapListener {
 
         // add additional meta tags
         head.append("<meta name='viewport' content='width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes'>");
-        head.append("<link rel='shortcut icon' href='icons/favicon.ico'>");
+        head.append("<link rel='shortcut icon' href='favicon.ico'>");
         head.append("<link rel='icon' sizes='192x192' href='frontend/images/icons/icon-192x192.png'>");
         head.append("<link rel='icon' sizes='96x96' href='frontend/images/icons/icon-96x96.png'>");
         head.append("<link rel='apple-touch-icon' sizes='192x192' href='frontend/images/icons/icon-192x192.png'>");
