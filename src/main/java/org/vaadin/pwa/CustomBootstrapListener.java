@@ -20,7 +20,6 @@ public class CustomBootstrapListener implements BootstrapListener {
         final Element head = response.getDocument().head();
 
         // manifest needs to be prepended before scripts or it won't be loaded
-        head.prepend("<meta name='theme-color' content='#227aef'>");
         head.prepend("<link rel='manifest' href='manifest.json'>");
 
         // Add service worker
@@ -28,6 +27,7 @@ public class CustomBootstrapListener implements BootstrapListener {
                 .attr("src", "register-sw.js");
 
         // add additional meta tags
+        head.append("<meta name='theme-color' content='#227aef'>");
         head.append("<meta name='viewport' content='width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes'>");
         head.append("<link rel='shortcut icon' href='favicon.ico'>");
         head.append("<link rel='icon' sizes='192x192' href='frontend/images/icons/icon-192x192.png'>");
